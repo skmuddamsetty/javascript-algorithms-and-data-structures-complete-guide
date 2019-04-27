@@ -109,6 +109,19 @@
     }
 
     /**
+     *
+     * @param {Node} node
+     * @return {Node} in order pre decessor of the node
+     * i.e. maximum element from the right sub tree of the given node
+     */
+    getMaximumElementInRightSubTreeOfNode(node) {
+      while (node && node.right) {
+        node = node.right;
+      }
+      return node;
+    }
+
+    /**
      * gets the inorder successor of the given key
      * @param {Node} root of the binary tree
      * @param {Number} key of the node
@@ -163,6 +176,30 @@
       }
       return inOrderPreDecessor;
     }
+
+    /**
+     * Deletes the node in the binary tree
+     * @param {Node} root of the binary tree
+     * @param {Number} key the node with key that needs to be deleted
+     * @return {Node} root updated binary tree after deleting the node
+     */
+    deleteNode(root, key) {
+      if (root === null || root === undefined) return root;
+      if (key < root.key) {
+        root.left = this.deleteNode(root.left, key);
+      } else if (key > root.key) {
+        root.right = this.deleteNode(root.right, key);
+      } else {
+        if (root.left && root.right) {
+          let maxNode = this.getMaximumElementInRightSubTreeOfNode(root);
+          root.key = maxNode.key;
+          root.right = this.deleteNode(root.right, maxNode.key);
+        } else {
+          return root.left ? root.left : root.right;
+        }
+      }
+      return root;
+    }
   }
 
   /**
@@ -184,6 +221,5 @@
   bst.insert(9, bst.root);
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
-  bst.getInOrderPreDecessor(bst.root, 10);
-  // bst.constructBalancedBST([1, 2]);
+  bst.deleteNode(bst.root, 9);
 }
