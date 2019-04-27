@@ -61,6 +61,22 @@
         return this.searchKey(key, root.right);
       }
     }
+
+    /**
+     * Constructs a Balanced Binary Search Tree from given sorted Array
+     * @param {Array} arr sorted array in Ascending order
+     * @param {number} start is by default zero
+     * @param {number} end Array.length - 1 by default
+     * Time Complexity: O(n)
+     */
+    constructBalancedBST(arr, start = 0, end = arr.length - 1) {
+      if (start > end) return null;
+      let mid = Math.floor((start + end) / 2);
+      let root = new Node(arr[mid]);
+      root.left = this.constructBalancedBST(arr, start, mid - 1);
+      root.right = this.constructBalancedBST(arr, mid + 1, end);
+      return root;
+    }
   }
 
   /**
@@ -82,5 +98,5 @@
   bst.insert(9, bst.root);
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
-  bst.searchKey(14, bst.root);
+  bst.constructBalancedBST([1, 2]);
 }
