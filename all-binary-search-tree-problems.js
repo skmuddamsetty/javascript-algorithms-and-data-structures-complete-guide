@@ -200,6 +200,23 @@
       }
       return root;
     }
+
+    /**
+     * Determines if the binary tree is a binary search tree or not
+     * @param {Node} root of the binary tree
+     * @return {Boolean} returns true if the binary search tree is true, else false
+     * Time Complexity: O(h)
+     * Space Complexity: O(1)
+     */
+    isBST(root) {
+      if (root === null || root === undefined) return true;
+      if (
+        (root.left && root.key < root.left.key) ||
+        (root.right && root.key > root.right.key)
+      )
+        return false;
+      return this.isBST(root.left) && this.isBST(root.right);
+    }
   }
 
   /**
@@ -221,5 +238,5 @@
   bst.insert(9, bst.root);
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
-  bst.deleteNode(bst.root, 9);
+  bst.isBST(bst.root);
 }
