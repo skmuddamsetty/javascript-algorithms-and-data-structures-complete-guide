@@ -77,6 +77,92 @@
       root.right = this.constructBalancedBST(arr, mid + 1, end);
       return root;
     }
+
+    /**
+     *
+     * @param {Node} node
+     * @return {Node} in order successor of the node
+     * i.e. minimum element from the right sub tree of the given node
+     */
+    getMinimumElementInRightSubTreeOfNode(node) {
+      if (node === null || node === undefined) return node;
+      let tempNode = node.right;
+      while (tempNode.left) {
+        tempNode = tempNode.left;
+      }
+      return tempNode;
+    }
+
+    /**
+     *
+     * @param {Node} node
+     * @return {Node} in order pre decessor of the node
+     * i.e. maximum element from the left sub tree of the given node
+     */
+    getMaximumElementInLeftSubTreeOfNode(node) {
+      if (node === null || node === undefined) return node;
+      let tempNode = node.left;
+      while (tempNode.right) {
+        tempNode = tempNode.right;
+      }
+      return tempNode;
+    }
+
+    /**
+     * gets the inorder successor of the given key
+     * @param {Node} root of the binary tree
+     * @param {Number} key of the node
+     * @return {Node} in order successor of the given key
+     * Time Complexity: O(logn)
+     * Space Complexity: O(1)
+     */
+    getInOrderSuccessor(root, key) {
+      if (root === null || root === undefined) return null;
+      let inOrderSuccessor;
+      while (root !== null) {
+        if (key < root.key) {
+          inOrderSuccessor = root;
+          root = root.left;
+        } else if (key > root.key) {
+          root = root.right;
+        } else {
+          if (root.right) {
+            inOrderSuccessor = this.getMinimumElementInRightSubTreeOfNode(root);
+          }
+          break;
+        }
+      }
+      return inOrderSuccessor;
+    }
+
+    /**
+     * gets the inorder pre decessor of the given key
+     * @param {Node} root of the binary tree
+     * @param {Number} key of the node
+     * @return {Node} in order pre decessor of the given key
+     * Time Complexity: O(logn)
+     * Space Complexity: O(1)
+     */
+    getInOrderPreDecessor(root, key) {
+      if (root === null || root === undefined) return null;
+      let inOrderPreDecessor;
+      while (root !== null) {
+        if (key < root.key) {
+          root = root.left;
+        } else if (key > root.key) {
+          inOrderSuccessor = root;
+          root = root.right;
+        } else {
+          if (root.left) {
+            inOrderPreDecessor = this.getMaximumElementInLeftSubTreeOfNode(
+              root
+            );
+          }
+          break;
+        }
+      }
+      return inOrderPreDecessor;
+    }
   }
 
   /**
@@ -98,5 +184,6 @@
   bst.insert(9, bst.root);
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
-  bst.constructBalancedBST([1, 2]);
+  bst.getInOrderPreDecessor(bst.root, 10);
+  // bst.constructBalancedBST([1, 2]);
 }
