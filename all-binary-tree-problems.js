@@ -67,16 +67,57 @@
       this.printNodesAtLevel(level - 1, root.left);
       this.printNodesAtLevel(level - 1, root.right);
     }
+
+    /**
+     * prints the node keys in pre order of the binary tree using iterative
+     * hint: use one stack - process the node and then push right node first
+     * and then left node next so that while popping elements the left node
+     * will be the first element to be popped out from the stack.
+     * Time Complexity: O(n) - because each is traversed once
+     * Space Complexity: O(n) - as space required is proportional to the height of the tree
+     * which can be equal to number of nodes in the tree in worst case for skewed trees.
+     * @param {root} root of the binary tree
+     */
+    preOrderTraversalIterative(root = this.root) {
+      let stack = [];
+      let node;
+      let preOrderStr = '';
+      stack.push(root);
+      while (stack.length) {
+        node = stack.pop();
+        preOrderStr = preOrderStr + '-->' + node.key;
+        if (node.right) {
+          stack.push(node.right);
+        }
+        if (node.left) {
+          stack.push(node.left);
+        }
+      }
+      return preOrderStr;
+    }
+
+    /**
+     * Prints the node keys in pre order of the binary tree using recursion
+     * @param {root} root of the binary tree
+     * Time Complexity: O(n) - because each is traversed once
+     * Space Complexity: O(1)
+     */
+    preOrderTraversalRecursive(root = this.root) {
+      if (root === null || root === undefined) return; // this is the base case
+      console.log('Processed Node with Key-->' + root.key);
+      this.preOrderTraversalRecursive(root.left);
+      this.preOrderTraversalRecursive(root.right);
+    }
   }
-  /**
-   *              ----------1----------
-   *             |                     |
-   *             2                     3
-   *             |                     |
-   *          4-----5               6-----7
-   *          |
-   *       8-----9
-   */
+
+  //       1
+  //     /  \
+  //    2    3
+  //   / \   / \
+  //  4   5  6  7
+  // / \
+  //8  9
+
   let bt = new BinaryTree();
   bt.root = bt.insert(1);
   bt.root = bt.insert(2, bt.root);
@@ -87,5 +128,5 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.printNodesAtLevel(3);
+  bt.preOrderTraversalRecursive();
 }
