@@ -150,6 +150,54 @@
       this.postOrderTraversalRecursive(root.right);
       console.log('Processed Node with Key-->' + root.key);
     }
+
+    /**
+     * calculates the height of binary tree.
+     * Height of binary tree is maximum number of edges from root
+     * @param {root} root of the binary tree
+     * @returns {number} height of binary tree
+     */
+    heightOfBinaryTreeRecursively(root = this.root) {
+      if (root === null || root === undefined) return -1;
+      return (
+        1 +
+        Math.max(
+          this.heightOfBinaryTreeRecursively(root.left),
+          this.heightOfBinaryTreeRecursively(root.right)
+        )
+      );
+    }
+
+    /**
+     * calculates the height of binary tree iteratively
+     * Height of binary tree is maximum number of edges from root
+     * Since this is iterative process we use level order traversal
+     * (BFS using queue) and increment the height only once a level is processed.
+     * @param {root} root of the binary tree
+     * @returns {number} height of binary tree
+     */
+    heightOfBinaryTreeIteratively(root = this.root) {
+      if (root === null || root === undefined) return -1;
+      let queue = [root];
+      let height = -1;
+      let node;
+      let length;
+      while (queue.length) {
+        length = queue.length;
+        while (length > 0) {
+          node = queue.shift();
+          if (node.left) {
+            queue.push(node.left);
+          }
+          if (node.right) {
+            queue.push(node.right);
+          }
+          length--;
+        }
+        height++;
+      }
+      return height;
+    }
   }
 
   //       1
@@ -170,5 +218,5 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.postOrderTraversalRecursive();
+  bt.heightOfBinaryTreeIteratively();
 }
