@@ -108,6 +108,48 @@
       this.preOrderTraversalRecursive(root.left);
       this.preOrderTraversalRecursive(root.right);
     }
+
+    /**
+     * prints the keys in post order of the binary tree using iterative
+     * hint: use two stacks - push into stack 1, pop from stack 1 and then push into stack2
+     * Time Complexity: O(n) - because each is traversed once
+     * Space Complexity: O(n) - as space required is proportional to the
+     * height of the tree which can be equal to number of nodes in the tree
+     * in worst case for skewed trees.
+     * @param {root} root of the binary tree
+     */
+    postOrderTraversalIterative(root = this.root) {
+      let stack1 = [];
+      let stack2 = [];
+      let node;
+      let postOrderStr = '';
+      stack1.push(root);
+      while (stack1.length) {
+        node = stack1.pop();
+        stack2.push(node.key);
+        if (node.left) {
+          stack1.push(node.left);
+        }
+        if (node.right) {
+          stack1.push(node.right);
+        }
+      }
+      while (stack2.length) {
+        postOrderStr = postOrderStr + '-->' + stack2.pop();
+      }
+      return postOrderStr;
+    }
+
+    /**
+     * Prints the keys in post order of the binary tree using recursion
+     * @param {root} root of the binary tree
+     */
+    postOrderTraversalRecursive(root = this.root) {
+      if (root === null || root === undefined) return; // this is the base case
+      this.postOrderTraversalRecursive(root.left);
+      this.postOrderTraversalRecursive(root.right);
+      console.log('Processed Node with Key-->' + root.key);
+    }
   }
 
   //       1
@@ -128,5 +170,5 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.preOrderTraversalRecursive();
+  bt.postOrderTraversalRecursive();
 }
