@@ -415,6 +415,39 @@
       }
       return arr;
     }
+
+    /**
+     * Prints all ancestors of the given node in the binary tree
+     * @param {number} key that we are looking for
+     * @param {Node} root of the binary tree
+     * @returns {Array} of all ancestors of given key
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    getAllAncestors(key, root = this.root, stack = []) {
+      this.getAncestorHelper(key, root, stack);
+      return stack;
+    }
+
+    /**
+     *
+     * @param {number} key of the node
+     * @param {Node} root of the binary tree
+     * @param {Array} stack ancestors of the given key
+     */
+    getAncestorHelper(key, root = this.root, stack) {
+      if (root === null || root === undefined) return null;
+      if (key === root.key) return true;
+      if (
+        this.getAncestorHelper(key, root.left, stack) ||
+        this.getAncestorHelper(key, root.right, stack)
+      ) {
+        stack.push(root.key);
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   //       1
@@ -435,7 +468,7 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.leftViewOfBinaryTree();
+  bt.getAllAncestors(9);
 
   /**
    * One more custom binary tree
