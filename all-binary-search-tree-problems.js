@@ -217,6 +217,22 @@
         return false;
       return this.isBST(root.left) && this.isBST(root.right);
     }
+
+    printAllPathsFromRootToLeaf(root = this.root, queue = []) {
+      if (root === null || root === undefined) return null;
+      queue.push(root.key);
+      this.printAllPathsFromRootToLeaf(root.left, queue);
+      if (root.left === null && root.right === null) {
+        // print elements in the queue
+        let path = '';
+        for (let i = 0; i < queue.length; i++) {
+          path = path + '-->' + queue[i];
+        }
+        console.log(path);
+      }
+      this.printAllPathsFromRootToLeaf(root.right, queue);
+      queue.pop();
+    }
   }
 
   /**
@@ -239,4 +255,5 @@
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
   bst.isBST(bst.root);
+  bst.printAllPathsFromRootToLeaf();
 }
