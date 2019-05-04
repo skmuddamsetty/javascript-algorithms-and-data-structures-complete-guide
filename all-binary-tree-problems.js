@@ -448,6 +448,25 @@
         return false;
       }
     }
+
+    /**
+     * Returns the Lowest Common Ancestor of given keys
+     * @param {number} key one of the node that needs to searched
+     * @param {number} key two of the node that needs to searched
+     * @param {Node} root of the binary tree
+     * Time Complexity: O(n)
+     * Space Complexity: O(1)
+     */
+    lca(key1, key2, root = this.root) {
+      if (root === null || root === undefined) {
+        return null;
+      }
+      if (root.data === key1 || root.data === key2) return root;
+      let left = this.lca(key1, key2, root);
+      let right = this.lca(key1, key2, root);
+      if (left !== null && right !== null) return root;
+      return left ? left : right;
+    }
   }
 
   //       1
@@ -468,7 +487,7 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.getAllAncestors(9);
+  bt.lca(7, 9);
 
   /**
    * One more custom binary tree
