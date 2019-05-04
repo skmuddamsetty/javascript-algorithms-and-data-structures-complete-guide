@@ -21,6 +21,53 @@
       this.root = null;
     }
 
+    /**********************************HELPER METHODS************************/
+    /**
+     * this merges the individually sorted arrays
+     * @param {Array} arr1 sorted array 1
+     * @param {Array} arr2 sorted array 2
+     */
+    merge(arr1, arr2) {
+      let results = [];
+      let i = 0;
+      let j = 0;
+      while (i < arr1.length && j < arr2.length) {
+        if (arr1[i] <= arr2[j]) {
+          results.push(arr1[i]);
+          i++;
+        } else if (arr1[i] > arr2[j]) {
+          results.push(arr2[j]);
+          j++;
+        }
+      }
+      while (i < arr1.length) {
+        results.push(arr1[i]);
+        i++;
+      }
+      while (j < arr2.length) {
+        results.push(arr2[j]);
+        j++;
+      }
+      return results;
+    }
+
+    /**
+     * initiates the merge sort, divides the single array into multiple single arrays
+     * and merges them back
+     * @param {Array} arr that needs to be sorted
+     * @returns {Array} an array which is sorted
+     */
+    mergeSort(arr) {
+      if (arr.length === 1) {
+        return arr;
+      }
+      let mid = Math.floor(arr.length / 2);
+      let left = this.mergeSort(arr.slice(0, mid));
+      let right = this.mergeSort(arr.slice(mid));
+      return this.merge(left, right);
+    }
+    /**********************************HELPER METHODS************************/
+
     /**
      * Inserts the node in the proper position based on the key
      * @param {number} key of the node
@@ -233,6 +280,152 @@
       this.printAllPathsFromRootToLeaf(root.right, queue);
       queue.pop();
     }
+
+    /**
+     * returns the vertical order map of the given binary tree
+     * @param {Node} root of the binary tree
+     * Use level order traversal and hashmap
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    verticalOrderOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      root.hd = 0;
+      let queue = [root];
+      let node;
+      let obj = {};
+      let currHd = 0;
+      while (queue.length) {
+        node = queue.shift();
+        currHd = node.hd;
+        if (obj[currHd] !== undefined) {
+          obj[currHd].push(node.key);
+        } else {
+          obj[currHd] = [node.key];
+        }
+        if (node.left) {
+          node.left.hd = currHd - 1;
+          queue.push(node.left);
+        }
+        if (node.right) {
+          node.right.hd = currHd + 1;
+          queue.push(node.right);
+        }
+      }
+      return obj;
+    }
+
+    /**
+     * returns the vertical order map of the given binary tree
+     * @param {Node} root of the binary tree
+     * Use level order traversal and hashmap
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    horizontalOrderOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      root.hd = 0;
+      let queue = [root];
+      let node;
+      let obj = {};
+      let currHd = 0;
+      while (queue.length) {
+        node = queue.shift();
+        currHd = node.hd;
+        if (obj[currHd] !== undefined) {
+          obj[currHd].push(node.key);
+        } else {
+          obj[currHd] = [node.key];
+        }
+        if (node.left) {
+          node.left.hd = currHd + 1;
+          queue.push(node.left);
+        }
+        if (node.right) {
+          node.right.hd = currHd + 1;
+          queue.push(node.right);
+        }
+      }
+      return obj;
+    }
+
+    /**
+     * returns an array of the top view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr top view of binary tree
+     * Time complexity: O(nlogn)
+     * Space Complexity: O(n)
+     */
+    topViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.verticalOrderOfBinaryTree(root);
+      let keys = Object.keys(obj).map(key => {
+        return Number(key);
+      });
+      let sortedKeys = this.mergeSort(keys);
+      for (let key of sortedKeys) {
+        arr.push(obj[key][0]);
+      }
+      return arr;
+    }
+
+    /**
+     * returns an array of the bottom view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr bottom view of binary tree
+     * Time complexity: O(nlogn)
+     * Space Complexity: O(n)
+     */
+    bottomViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.verticalOrderOfBinaryTree(root);
+      let keys = Object.keys(obj).map(key => {
+        return Number(key);
+      });
+      let sortedKeys = this.mergeSort(keys);
+      for (let key of sortedKeys) {
+        let lastIndex = obj[key].length - 1;
+        arr.push(obj[key][lastIndex]);
+      }
+      return arr;
+    }
+
+    /**
+     * returns an array of the left view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr left view of binary tree
+     * Time complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    leftViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.horizontalOrderOfBinaryTree(root);
+      for (let key of Object.keys(obj)) {
+        arr.push(obj[key][0]);
+      }
+      return arr;
+    }
+
+    /**
+     * returns an array of the right view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr right view of binary tree
+     * Time complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    rightViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.horizontalOrderOfBinaryTree(root);
+      for (let key of Object.keys(obj)) {
+        let lastIndex = obj[key].length - 1;
+        arr.push(obj[key][lastIndex]);
+      }
+      return arr;
+    }
   }
 
   /**
@@ -255,5 +448,5 @@
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
   bst.isBST(bst.root);
-  bst.printAllPathsFromRootToLeaf();
+  bst.topViewOfBinaryTree();
 }
