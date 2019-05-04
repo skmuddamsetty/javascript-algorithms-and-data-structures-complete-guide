@@ -467,6 +467,20 @@
       if (left !== null && right !== null) return root;
       return left ? left : right;
     }
+
+    /**
+     * Returns the number of leaf nodes
+     * @param {Node} root of the binary tree
+     * Time Complexity: O(n)
+     * Space Complexity: O(1)
+     */
+    numberOfLeadNodes(root = this.root) {
+      if (root === null || root === undefined) return 0;
+      if (root.left === null && root.right === null) return 1;
+      return (
+        this.numberOfLeadNodes(root.left) + this.numberOfLeadNodes(root.right)
+      );
+    }
   }
 
   //       1
@@ -487,7 +501,7 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.lca(7, 9);
+  bt.numberOfLeadNodes();
 
   /**
    * One more custom binary tree
