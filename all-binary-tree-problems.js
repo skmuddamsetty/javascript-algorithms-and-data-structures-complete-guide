@@ -21,6 +21,53 @@
       this.root = null;
     }
 
+    /**********************************HELPER METHODS************************/
+    /**
+     * this merges the individually sorted arrays
+     * @param {Array} arr1 sorted array 1
+     * @param {Array} arr2 sorted array 2
+     */
+    merge(arr1, arr2) {
+      let results = [];
+      let i = 0;
+      let j = 0;
+      while (i < arr1.length && j < arr2.length) {
+        if (arr1[i] <= arr2[j]) {
+          results.push(arr1[i]);
+          i++;
+        } else if (arr1[i] > arr2[j]) {
+          results.push(arr2[j]);
+          j++;
+        }
+      }
+      while (i < arr1.length) {
+        results.push(arr1[i]);
+        i++;
+      }
+      while (j < arr2.length) {
+        results.push(arr2[j]);
+        j++;
+      }
+      return results;
+    }
+
+    /**
+     * initiates the merge sort, divides the single array into multiple single arrays
+     * and merges them back
+     * @param {Array} arr that needs to be sorted
+     * @returns {Array} an array which is sorted
+     */
+    mergeSort(arr) {
+      if (arr.length === 1) {
+        return arr;
+      }
+      let mid = Math.floor(arr.length / 2);
+      let left = this.mergeSort(arr.slice(0, mid));
+      let right = this.mergeSort(arr.slice(mid));
+      return this.merge(left, right);
+    }
+    /**********************************HELPER METHODS************************/
+
     /**
      * Inserts node into the binary tree
      * @param {number} data desired input for the node
@@ -256,6 +303,49 @@
       }
       return obj;
     }
+
+    /**
+     * returns an array of the top view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr top view of binary tree
+     * Time complexity: O(nlogn)
+     * Space Complexity: O(n)
+     */
+    topViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.verticalOrderOfBinaryTree(root);
+      let keys = Object.keys(obj).map(key => {
+        return Number(key);
+      });
+      let sortedKeys = this.mergeSort(keys);
+      for (let key of sortedKeys) {
+        arr.push(obj[key][0]);
+      }
+      return arr;
+    }
+
+    /**
+     * returns an array of the bottom view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr bottom view of binary tree
+     * Time complexity: O(nlogn)
+     * Space Complexity: O(n)
+     */
+    bottomViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.verticalOrderOfBinaryTree(root);
+      let keys = Object.keys(obj).map(key => {
+        return Number(key);
+      });
+      let sortedKeys = this.mergeSort(keys);
+      for (let key of sortedKeys) {
+        let lastIndex = obj[key].length - 1;
+        arr.push(obj[key][lastIndex]);
+      }
+      return arr;
+    }
   }
 
   //       1
@@ -276,7 +366,7 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.verticalOrderOfBinaryTree();
+  bt.topViewOfBinaryTree();
 
   /**
    * One more custom binary tree
