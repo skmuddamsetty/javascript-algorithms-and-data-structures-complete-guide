@@ -198,6 +198,30 @@
       }
       return height;
     }
+
+    /**
+     * Prints all the paths from root to each leaf node
+     * @param {Node} root of the binary tree
+     * @param {Array} stack by default stack is empty
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    printAllPathsFromRootToLeafNodes(root = this.root, stack = []) {
+      if (root === null || root === undefined) return null;
+      stack.push(root.key);
+      this.printAllPathsFromRootToLeafNodes(root.left, stack);
+      if (root.left === null && root.right === null) {
+        let stackLength = 0;
+        let path = '';
+        while (stackLength < stack.length) {
+          path = path + '-->' + stack[stackLength];
+          stackLength++;
+        }
+        console.log(path);
+      }
+      this.printAllPathsFromRootToLeafNodes(root.right, stack);
+      stack.pop();
+    }
   }
 
   //       1
@@ -218,5 +242,5 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.heightOfBinaryTreeIteratively();
+  bt.printAllPathsFromRootToLeafNodes();
 }
