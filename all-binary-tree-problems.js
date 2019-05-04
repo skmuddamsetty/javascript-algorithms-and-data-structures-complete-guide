@@ -305,6 +305,40 @@
     }
 
     /**
+     * returns the vertical order map of the given binary tree
+     * @param {Node} root of the binary tree
+     * Use level order traversal and hashmap
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    horizontalOrderOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      root.hd = 0;
+      let queue = [root];
+      let node;
+      let obj = {};
+      let currHd = 0;
+      while (queue.length) {
+        node = queue.shift();
+        currHd = node.hd;
+        if (obj[currHd] !== undefined) {
+          obj[currHd].push(node.key);
+        } else {
+          obj[currHd] = [node.key];
+        }
+        if (node.left) {
+          node.left.hd = currHd + 1;
+          queue.push(node.left);
+        }
+        if (node.right) {
+          node.right.hd = currHd + 1;
+          queue.push(node.right);
+        }
+      }
+      return obj;
+    }
+
+    /**
      * returns an array of the top view of binary tree
      * @param {Node} root of the binary tree
      * @returns {Array} arr top view of binary tree
@@ -346,6 +380,41 @@
       }
       return arr;
     }
+
+    /**
+     * returns an array of the left view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr left view of binary tree
+     * Time complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    leftViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.horizontalOrderOfBinaryTree(root);
+      for (let key of Object.keys(obj)) {
+        arr.push(obj[key][0]);
+      }
+      return arr;
+    }
+
+    /**
+     * returns an array of the right view of binary tree
+     * @param {Node} root of the binary tree
+     * @returns {Array} arr right view of binary tree
+     * Time complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    rightViewOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      let arr = [];
+      let obj = this.horizontalOrderOfBinaryTree(root);
+      for (let key of Object.keys(obj)) {
+        let lastIndex = obj[key].length - 1;
+        arr.push(obj[key][lastIndex]);
+      }
+      return arr;
+    }
   }
 
   //       1
@@ -366,7 +435,7 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.topViewOfBinaryTree();
+  bt.leftViewOfBinaryTree();
 
   /**
    * One more custom binary tree
