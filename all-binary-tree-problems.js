@@ -222,6 +222,40 @@
       this.printAllPathsFromRootToLeafNodes(root.right, stack);
       stack.pop();
     }
+
+    /**
+     * returns the vertical order map of the given binary tree
+     * @param {Node} root of the binary tree
+     * Use level order traversal and hashmap
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    verticalOrderOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return null;
+      root.hd = 0;
+      let queue = [root];
+      let node;
+      let obj = {};
+      let currHd = 0;
+      while (queue.length) {
+        node = queue.shift();
+        currHd = node.hd;
+        if (obj[currHd] !== undefined) {
+          obj[currHd].push(node.key);
+        } else {
+          obj[currHd] = [node.key];
+        }
+        if (node.left) {
+          node.left.hd = currHd - 1;
+          queue.push(node.left);
+        }
+        if (node.right) {
+          node.right.hd = currHd + 1;
+          queue.push(node.right);
+        }
+      }
+      return obj;
+    }
   }
 
   //       1
@@ -242,5 +276,21 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.printAllPathsFromRootToLeafNodes();
+  bt.verticalOrderOfBinaryTree();
+
+  /**
+   * One more custom binary tree
+   *              1
+   *          2       3
+   *       4    5
+   *     6       7
+   */
+  //   let cbt = new BinaryTree();
+  //   cbt.root = new Node(1);
+  //   cbt.root.left = new Node(2);
+  //   cbt.root.right = new Node(3);
+  //   cbt.root.left.left = new Node(4);
+  //   cbt.root.left.right = new Node(5);
+  //   cbt.root.left.left.left = new Node(6);
+  //   cbt.root.left.right.right = new Node(7);
 }
