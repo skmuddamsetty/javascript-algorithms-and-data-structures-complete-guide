@@ -30,7 +30,7 @@
    * Returns the number which is occuring odd number of times in the array
    * @param {Array} arr input array
    * @returns {Array}
-   * Time Complxity: O(n)
+   * Time Complexity: O(n)
    * Space Complexity: O(1)
    */
   function numberOccuringOddNumberOfTimes(arr = []) {
