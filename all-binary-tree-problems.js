@@ -481,6 +481,23 @@
         this.numberOfLeadNodes(root.left) + this.numberOfLeadNodes(root.right)
       );
     }
+
+    /**
+     * calculates the min height (or) minimum depth of binary tree.
+     * Minimum Height of binary tree is minimum number of edges from root
+     * @param {root} root of the binary tree
+     * @returns {number} minimum height of binary tree
+     */
+    minimumHeightOfBinaryTree(root = this.root) {
+      if (root === null || root === undefined) return -1;
+      return (
+        1 +
+        Math.min(
+          this.minimumHeightOfBinaryTree(root.left),
+          this.minimumHeightOfBinaryTree(root.right)
+        )
+      );
+    }
   }
 
   //       1
@@ -501,7 +518,7 @@
   bt.root = bt.insert(7, bt.root);
   bt.root = bt.insert(8, bt.root);
   bt.root = bt.insert(9, bt.root);
-  bt.numberOfLeadNodes();
+  bt.minimumHeightOfBinaryTree();
 
   /**
    * One more custom binary tree
