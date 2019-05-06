@@ -500,6 +500,63 @@
         )
       );
     }
+
+    /**
+     * *****************************PRINT COUSIN NODES START********************
+     * Given a binary tree, print all cousins of a given node.
+     * Two nodes of binary tree are cousins of each other only
+     * if they have different parents but they have same level.
+     *
+     * The idea is to find level of given node in binary tree
+     * by doing a  pre-order traversal
+     * of the tree. Once the level is found,
+     * we print all nodes present in that level which is not sibling of given node
+     * or the node itself.
+     * Prints the cousins of the given node
+     * @param {Node} root of the binary tree
+     * @param {number} key
+     * Time Complexity: O(n)
+     * Space Complexity: O(h) extra space for the call stack where h is the height
+     * of the binary tree
+     *
+     */
+    printCousinsOfGivenNode(root = this.root, key) {
+      if (root === null || root === undefined) return null;
+      let level = this.getLevelOfGivenKey(key, 1);
+      this.printCousinsOfGivenNodeAtLevel(key, level, root);
+    }
+
+    getLevelOfGivenKey(key, level, root = this.root) {
+      if (root === null || root === undefined) {
+        return 0;
+      }
+      if (root.key === key) {
+        return level;
+      }
+      return (
+        this.getLevelOfGivenKey(key, level + 1, root.left) +
+        this.getLevelOfGivenKey(key, level + 1, root.right)
+      );
+    }
+
+    printCousinsOfGivenNodeAtLevel(key, level, root = this.root) {
+      if (root === null || root === undefined) return;
+      if (level === 1) {
+        console.log(root.key);
+      }
+      if (
+        root.left &&
+        root.left.key !== key &&
+        root.right &&
+        root.right.key !== key
+      ) {
+        this.printCousinsOfGivenNodeAtLevel(key, level - 1, root.left);
+        this.printCousinsOfGivenNodeAtLevel(key, level - 1, root.right);
+      }
+    }
+    /**
+     * *****************************PRINT COUSIN NODES END********************
+     */
   }
 
   //       1
