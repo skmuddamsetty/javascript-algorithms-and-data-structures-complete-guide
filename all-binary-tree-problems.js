@@ -487,6 +487,8 @@
      * Minimum Height of binary tree is minimum number of edges from root
      * @param {root} root of the binary tree
      * @returns {number} minimum height of binary tree
+     * Time Complexity: O(n)
+     * Space Complexity: O(1)
      */
     minimumHeightOfBinaryTree(root = this.root) {
       if (root === null || root === undefined) return -1;
