@@ -426,6 +426,31 @@
       }
       return arr;
     }
+
+    /**
+     * Given the root node of a binary search tree,
+     * return the sum of values of all nodes with value
+     * between L and R (inclusive).
+     * @param {Node} root of the binary searcg tree
+     * @param {number} minimum
+     * @param {number} maximum
+     * Time Complexity: O(n),where n is the number of nodes in the tree.
+     * Space Complexity: O(1)
+     */
+    rangeSumBST(root = this.root, minimum, maximum) {
+      let sum = 0;
+      if (root === null || root === undefined) return 0;
+      if (root.key >= minimum && root.key <= maximum) {
+        sum = root.key;
+      }
+      if (minimum <= root.key || maximum <= root.key) {
+        sum = sum + this.rangeSumBST(root.left, minimum, maximum);
+      }
+      if (root.key <= minimum || root.key <= maximum) {
+        sum = sum + this.rangeSumBST(root.right, minimum, maximum);
+      }
+      return sum;
+    }
   }
 
   /**
@@ -448,5 +473,5 @@
   bst.insert(13, bst.root);
   bst.insert(14, bst.root);
   bst.isBST(bst.root);
-  bst.topViewOfBinaryTree();
+  bst.rangeSumBST(bt.root, 5, 15);
 }
